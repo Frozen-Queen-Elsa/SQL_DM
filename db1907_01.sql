@@ -218,3 +218,244 @@ VALUES
     143          -- st_iq - tinyint
 )
 GO	
+
+
+--Nhập dữ liệu cho bảng Môn Học
+SELECT * FROM dbo.tbSubject
+GO	
+
+INSERT dbo.tbSubject
+    (
+        sub_name,
+        sub_fee,
+        sub_hours
+    )
+VALUES
+    (
+        'Logic Building With C', -- sub_name - varchar(30)
+        150,  -- sub_fee - smallint
+        40   -- sub_hours - tinyint
+    ), 
+    (
+        'HTML/CSS3 - JS', -- sub_name - varchar(30)
+        180,  -- sub_fee - smallint
+        44   -- sub_hours - tinyint
+    ),	  
+    (
+        'Bootstrap - Jquery', -- sub_name - varchar(30)
+        80,  -- sub_fee - smallint
+       10   -- sub_hours - tinyint
+    ),	
+    (
+        'eProject I', -- sub_name - varchar(30)
+        100,  -- sub_fee - smallint
+        24   -- sub_hours - tinyint
+    ),	
+    (
+        'Database Design ', -- sub_name - varchar(30)
+        100,  -- sub_fee - smallint
+        20   -- sub_hours - tinyint
+    ),	 
+    (
+        'Database Development', -- sub_name - varchar(30)
+        200,  -- sub_fee - smallint
+        48   -- sub_hours - tinyint
+    )
+GO
+
+
+--Sửa lại thông tin môn lập trình C tăng học phí từ 150 > 160
+UPDATE dbo.tbSubject 
+	SET	sub_fee =160 WHERE sub_id=100
+GO	
+
+
+--Cập nhật dữ liệu điểm môn C cho các sinh viên	(ST01-ST16)
+SELECT * FROM dbo.tbExam
+GO 
+
+INSERT dbo.tbExam
+    (
+        st_id,
+        sub_id,
+        mark
+    )
+VALUES
+    (
+        'ST01', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        100   -- mark - tinyint
+    ), 
+    (
+        'ST02', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        30   -- mark - tinyint
+    ),	  
+    (
+        'ST03', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        50   -- mark - tinyint
+    ),
+	
+    (
+        'ST04', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        60   -- mark - tinyint
+    ), 
+    (
+        'ST05', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        40  -- mark - tinyint
+    ),		   	
+    (
+        'ST06', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        60   -- mark - tinyint
+    ),		
+    (
+        'ST07', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        80   -- mark - tinyint
+    ),				  */
+	(
+        'ST08', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        80   -- mark - tinyint
+    )	
+    (
+        'ST09', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        30   -- mark - tinyint
+    ),	  
+    (
+        'ST10', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        70   -- mark - tinyint
+    ),	  					 
+    (
+        'ST11', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        90   -- mark - tinyint
+    ),	  
+    (
+        'ST12', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        70   -- mark - tinyint
+    ),	  
+    (
+        'ST13', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        40   -- mark - tinyint
+    ),	  
+    (
+        'ST14', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        10   -- mark - tinyint
+    ),	  
+    (
+        'ST15', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        75   -- mark - tinyint
+    ),	  
+    (
+        'ST16', -- st_id - varchar(5)
+        100,  -- sub_id - tinyint
+        70   -- mark - tinyint
+    )		 
+	
+GO	
+
+
+--Cập nhật dữ liệu điểm môn HTML cho các sinh viên	(ST01-ST16)
+SELECT * FROM dbo.tbExam
+GO 
+   
+INSERT dbo.tbExam
+    (
+        st_id,
+        sub_id,
+        mark
+    )
+VALUES
+    (
+        'ST01', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        100   -- mark - tinyint
+    ), 
+    (
+        'ST02', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        90   -- mark - tinyint
+    ),	  
+    (
+        'ST03', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        80   -- mark - tinyint
+    ),
+	
+    (
+        'ST04', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        90   -- mark - tinyint
+    ), 
+    (
+        'ST05', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        80  -- mark - tinyint
+    ),		   	
+    (
+        'ST06', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        90   -- mark - tinyint
+    ),		
+    (
+        'ST07', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        30   -- mark - tinyint
+    ),			
+    (
+        'ST08', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        30   -- mark - tinyint
+    ),	
+    (
+        'ST09', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        20   -- mark - tinyint
+    ),	  
+    (
+        'ST10', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        70   -- mark - tinyint
+    ),	  					 
+    (
+        'ST11', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        95   -- mark - tinyint
+    ),	  
+    (
+        'ST12', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        75   -- mark - tinyint
+    ),	  
+    (
+        'ST13', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        70   -- mark - tinyint
+    ),	  
+    (
+        'ST14', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        80   -- mark - tinyint
+    ),	  
+    (
+        'ST15', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        60   -- mark - tinyint
+    ),	  
+    (
+        'ST16', -- st_id - varchar(5)
+        105,  -- sub_id - tinyint
+        20   -- mark - tinyint
+    )
+GO	
