@@ -86,7 +86,14 @@ FROM dbo.tbExam
 ORDER BY sub_id
 GO 
 
+
 SELECT sub_id,COUNT(*) AS N'Số lượt thi'
 FROM dbo.tbExam
 GROUP BY sub_id
+GO 
+
+--Thống kê điểm cao nhất , thấp nhất , bình quân của từng môn thi 
+SELECT sub_id,MAX(mark) AS N'Điểm cao nhất', MIN(mark) AS N'Điểm thấp nhất',AVG(mark) AS N'Điểm bình quân'
+FROM dbo.tbExam
+GROUP BY sub_id 
 GO 
