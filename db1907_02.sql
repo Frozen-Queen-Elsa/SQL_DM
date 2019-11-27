@@ -111,3 +111,61 @@ AS
 SELECT b.st_id, b.st_name,a.mark
 FROM Thi110 a JOIN dbo.tbStudent b ON a.st_id=b.st_id 
 GO 
+
+--Tạo 1 bảng có chứa cột XML
+CREATE TABLE tbXML
+(
+	id INT IDENTITY NOT NULL PRIMARY KEY,
+	products xml
+)
+GO	
+
+INSERT dbo.tbXML
+    (
+        products
+    )
+VALUES
+(
+	'<plist>
+		<product id="p1">
+			<name>
+				laptop
+			</name>
+			<price>
+				2000
+			</price>
+		</product>
+
+		<product id="p2">
+			<name>
+				Ipad
+			</name>
+			<price>
+				800
+			</price>
+		</product>
+
+		<product id="p4">
+			<name>
+				desktop
+			</name>
+			<price>
+				1700
+			</price>
+		</product>
+
+		<product id="p1">
+			<name>
+				mouse
+			</name>
+			<price>
+				20
+			</price>
+		</product>
+	</plist>' -- products - xml
+)
+GO 
+
+SELECT * FROM dbo.tbXML
+GO 
+
