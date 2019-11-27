@@ -169,3 +169,8 @@ GO
 SELECT * FROM dbo.tbXML
 GO 
 
+--Truy vấn đơn giá của laptop
+SELECT 
+	products.value('(/plist/product/name)[1]','varchar(20)') AS [name]	,
+	products.value('(/plist/product/price)[1]','varchar(20)') AS price
+FROM dbo.tbXML
