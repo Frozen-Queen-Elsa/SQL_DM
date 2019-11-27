@@ -97,3 +97,17 @@ SELECT sub_id,MAX(mark) AS N'Điểm cao nhất', MIN(mark) AS N'Điểm thấp 
 FROM dbo.tbExam
 GROUP BY sub_id 
 GO 
+
+--Liệt kê danh sách sinh viên dự thi môn học có mã số 110
+SELECT *
+FROM dbo.tbExam
+WHERE sub_id=110
+GO 
+
+WITH Thi110(st_id,mark) 
+AS 
+(SELECT st_id,mark FROM dbo.tbExam WHERE sub_id=110)
+
+SELECT b.st_id, b.st_name,a.mark
+FROM Thi110 a JOIN dbo.tbStudent b ON a.st_id=b.st_id 
+GO 
