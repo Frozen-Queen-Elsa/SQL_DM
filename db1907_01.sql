@@ -12,7 +12,7 @@ CREATE TABLE tbStudent
 	st_name NVARCHAR(40) NOT NULL, 
 	st_gender BIT NOT NULL DEFAULT 1,
 	st_dob DATE,
-	st_add VARCHAR(50)
+	st_add NVARCHAR(100)
 )
 GO	
 
@@ -316,12 +316,12 @@ VALUES
         'ST07', -- st_id - varchar(5)
         100,  -- sub_id - tinyint
         80   -- mark - tinyint
-    ),				  */
+    ),				  
 	(
         'ST08', -- st_id - varchar(5)
         100,  -- sub_id - tinyint
         80   -- mark - tinyint
-    )	
+    ),	
     (
         'ST09', -- st_id - varchar(5)
         100,  -- sub_id - tinyint
