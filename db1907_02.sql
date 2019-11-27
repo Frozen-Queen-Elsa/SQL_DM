@@ -1,4 +1,4 @@
-﻿USE db_1907
+USE db_1907
 GO
 
 SELECT * FROM dbo.tbStudent
@@ -35,7 +35,7 @@ GO
 --Lấy 3 bạn sinh viên có chỉ số IQ cao nhất
 SELECT *
 FROM dbo.tbStudent
-ORDER BY st_iq DESC
+ORDER BY st_iq DESC	
 GO	
 
 SELECT TOP 6 WITH TIES *
@@ -47,7 +47,41 @@ GO
 SELECT * INTO tbNamSV
 FROM tbStudent 
 WHERE st_gender = 1
+GO	   
+
+--In danh sách nam sinh viên có trong bảng tbNamSV
+SELECT * FROM dbo.tbNamSV
 GO
 
-SELECT * FROM dbo.tbStudent
+--Liên kết danh sách sinh viên có chỉ số iq từ 100-130
+SELECT *
+FROM dbo.tbStudent
+WHERE st_iq BETWEEN 100 AND 130
+GO
+
+--Liên kết các sinh viên có chỉ số IQ = 150 ,130 , 100 ,80
+SELECT *
+FROM dbo.tbStudent
+WHERE (st_iq=150) OR (st_iq=130) OR (st_iq=100) OR (st_iq=80)
+GO 
+
+SELECT *
+FROM dbo.tbStudent
+WHERE st_iq IN (150,130,100,80)
+GO 
+
+--Liệt kê danh sách sinh viên có họ Nguyễn
+SELECT *
+FROM dbo.tbStudent
+WHERE st_name LIKE N'Nguyễn%'
+GO 
+
+--Xem kết quả thi
+SELECT * FROM dbo.tbExam
 GO	
+
+--Liên kết các môn đã tổ chức thi cùng với các lượt thi trong môn đó
+SELECT * 
+FROM dbo.tbExam 
+ORDER BY sub_id
+GO 
