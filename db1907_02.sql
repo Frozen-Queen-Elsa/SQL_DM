@@ -85,3 +85,8 @@ SELECT *
 FROM dbo.tbExam 
 ORDER BY sub_id
 GO 
+
+SELECT sub_id,COUNT(*) AS N'Số lượt thi'
+FROM dbo.tbExam
+GROUP BY sub_id
+GO 
