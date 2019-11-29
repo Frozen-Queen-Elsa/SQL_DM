@@ -16,12 +16,13 @@ CREATE TABLE tbStudent
 (
 	Roll_no INT IDENTITY PRIMARY KEY,
 	Fullname VARCHAR(40) NOT NULL,
-	Grade VARCHAR(1) NOT NULL,
+	Grade VARCHAR(1) NOT NULL CHECK (Grade = 'A' OR Grade = 'B' OR Grade ='C'),
 	Sex VARCHAR(6) DEFAULT 'Female',
 	[Address] VARCHAR(60),
 	DOB DATE 
 )
 GO
+
 
 
 	   
