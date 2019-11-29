@@ -145,4 +145,53 @@ SELECT a.st_id,a.st_name,a.st_gender,a.st_iq,b.st_id AS [Leader ID],b.st_name AS
 FROM dbo.tbStudent a LEFT JOIN dbo.tbStudent b ON a.leader=b.st_id
 GO 
 
+--Tạo 1 bảng tạm chứa kết quả môn thi 100
+SELECT * INTO tbExam100
+FROM dbo.tbExam WHERE sub_id=100
+GO 
 
+--Tạo 1 bảng tạm chứa kết quả môn thi 105
+SELECT * INTO tbExam105
+FROM dbo.tbExam WHERE sub_id=105
+GO 
+
+--Tạo 1 bảng tạm chứa kết quả môn thi 110
+SELECT * INTO tbExam110
+FROM dbo.tbExam WHERE sub_id=110
+GO 
+
+--Truy vấn dữ liệu bảng 100
+SELECT * FROM dbo.tbExam100
+GO	
+
+--Truy vấn dữ liệu bảng 105
+SELECT * FROM dbo.tbExam105
+GO
+
+--Truy vấn dữ liệu bảng 110
+SELECT * FROM dbo.tbExam110
+GO
+
+--Truy vấn kết quả thi của 2 môn 100 và 105
+SELECT * FROM dbo.tbExam100 
+UNION 
+SELECT * FROM dbo.tbExam105
+GO
+
+
+--Liên kết các sinh viên đã thi 2 môn 100 và 110
+SELECT st_id FROM dbo.tbExam100
+INTERSECT
+SELECT st_id FROM dbo.tbExam110
+GO 
+
+--Liên kết các sinh viên đã thi 2 môn 10 và 110	(Dùng biểu thức CTE kết hợp với Join 
+WITH tbSV(MaSV) AS
+( 
+	SELECT st_id FROM dbo.tbExam100
+	INTERSECT
+	SELECT st_id FROM dbo.tbExam110
+)
+SELECT b.*
+FROM tbSV a JOIN dbo.tbStudent b ON a.MaSV = b.st_id
+GO 
