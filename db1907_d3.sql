@@ -180,6 +180,7 @@ GO
 
 
 --Liên kết các sinh viên đã thi 2 môn 100 và 110
+--Intersect là toán tử để biết phần tử có trong A và có trong B
 SELECT st_id FROM dbo.tbExam100
 INTERSECT
 SELECT st_id FROM dbo.tbExam110
@@ -194,4 +195,6 @@ WITH tbSV(MaSV) AS
 )
 SELECT b.*
 FROM tbSV a JOIN dbo.tbStudent b ON a.MaSV = b.st_id
-GO 
+GO
+
+--Except là toán tử để biết phần tử có trong A và không có trong B 
