@@ -4,7 +4,7 @@ ON
   SIZE=5,FILEGROWTH=10%,MAXSIZE=5
 )
 LOG ON	
-( NAME='ASs5_lg',FILENAME='D:\Study\Aptech\Season1\SQL\Database\Ass5_lg.ldf',
+( NAME='Ass5_lg',FILENAME='D:\Study\Aptech\Season1\SQL\Database\Ass5_lg.ldf',
   SIZE=2,FILEGROWTH=10%,MAXSIZE=2
 )
 GO
