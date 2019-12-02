@@ -1,4 +1,4 @@
-﻿CREATE DATABASE Ass5_db
+CREATE DATABASE Ass5_db
 ON	
 ( NAME='Ass5',FILENAME='D:\Study\Aptech\Season1\SQL\Database\Ass5.mdf',
   SIZE=5,FILEGROWTH=10%,MAXSIZE=5
@@ -273,10 +273,10 @@ FROM dbo.tbProduct
 GROUP BY CATID
 GO 
 
---4e sai để hỏi cô ??????
+--4e đầy đủ
 SELECT b.CATID,b.CatName, COUNT(*)
 FROM dbo.tbProduct a JOIN dbo.tbCategory b ON a.CATID=b.CATID
-GROUP BY a.CATID
+GROUP BY b.CATID,b.CatName
 GO 
 
 --4f
