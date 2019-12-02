@@ -1,4 +1,4 @@
-﻿CREATE DATABASE Ass6_db
+CREATE DATABASE Ass6_db
 ON	
 ( NAME='Ass6',FILENAME='D:\Study\Aptech\Season1\SQL\Database\Ass6.mdf',
   SIZE=5,FILEGROWTH=10%,MAXSIZE=5
@@ -466,20 +466,24 @@ ORDER BY AVG([DIEM THI])
 GO  
 
 
---Câu g		  ????
+--Câu g		  
 SELECT b.MSSV,b.HOTEN,b.MALOP,AVG(a.[DIEM THI]) AS N'Điểm Trung Bình'
 FROM dbo.tbDiem	a RIGHT JOIN dbo.tbSinhVien b ON b.MSSV = a.MSSV
-GROUP BY b.MSSV
+GROUP BY b.MSSV,b.HOTEN,b.MALOP
 HAVING AVG(a.[DIEM THI])<75
 ORDER BY AVG(a.[DIEM THI])
 GO  
 
 --Câu h	   (chưa biết cách có lớp và HOTEN)
-CREATE VIEW tbDiemTrungBinh
+CREATE VIEW vwDiemTrungBinh
 AS 
-SELECT MSSV,AVG([DIEM THI]) AS N'Điểm Trung Bình'
-FROM dbo.tbDiem
-GROUP BY MSSV
+SELECT b.MSSV,c.[TEN LOP],b.HOTEN,AVG([DIEM THI]) AS N'Điểm Trung Bình'
+FROM dbo.tbDiem	a JOIN (dbo.tbSinhVien b JOIN dbo.tbLop c ON c.MALOP = b.MALOP) ON c.MALOP = b.MALOP
+GROUP BY b.MSSV,c.[TEN LOP],b.HOTEN
+GO 
+
+SELECT *
+FROM dbo.vwDiemTrungBinh
 GO 
 
 --Câu i
