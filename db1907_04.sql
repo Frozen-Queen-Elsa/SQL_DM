@@ -103,3 +103,83 @@ WHERE sub_id=105
 ORDER BY mark
 GO 
 
+
+--Dùng Rowcount để kiểm tra số dòng đã cập nhật !! Chú ý là phải chạy cùng lúc và viết ngay sau đó , ko có Go chen giữa!!
+UPDATE dbo.tbExam 
+SET mark+=2
+WHERE mark<40 AND sub_id=100   
+
+SELECT @@rowcount AS N'Số dòng cập nhật'
+GO 
+
+
+/*
+	Viết store usp_updateMarkPoint thực hiện việc thay đổi điểm với 1 môn thi bất kỳ(được cung cấp theo tham số đầu vào)
+	 đối với các kết quả < 40 đ - Sau đó cho biết có bao nhiêu kết quả đã được thay đổi
+	-Lệnh 1 : Liệt kê kết quả môn đk yêu cầu / Sắp xếp theo điểm tăng dần
+	-Lệnh 2 : Cập nhật : cập nhật điểm cho các kết quả < 40 đ của 1 môn bất kỳ(tham số đầu vào)
+	-Lệnh 3 : Liệt kê bảng môn yêu cầu
+*/
+CREATE PROCEDURE usp_updateMarkPoint	
+					@ma_monhoc TINYINT,@diemthi INT,@sodong INT OUTPUT  
+AS
+BEGIN
+	--Lệnh 1 : Liệt kê kết quả môn đk yêu cầu / Sắp xếp theo điểm tăng dần
+	SELECT * 
+	FROM dbo.tbExam
+	WHERE sub_id=@ma_monhoc 
+	ORDER BY mark  ;
+
+	--Lệnh 2 : Cập nhật : cập nhật điểm cho các kết quả < 40 đ của 1 môn bất kỳ(tham số đầu vào)
+	UPDATE dbo.tbExam
+	SET mark+=@diemthi
+	WHERE sub_id=@ma_monhoc	AND mark<40 ;
+
+	--Cập nhật biến OUTPUT
+	SET @sodong = @@ROWCOUNT 
+
+	--Lệnh 3 : Liệt kê bảng môn yêu cầu
+	SELECT * 
+	FROM dbo.tbExam
+	WHERE sub_id=@ma_monhoc 
+	ORDER BY mark  ;
+END 
+GO 
+
+--Chạy Store usp_updateMarkPoint tăng 3 điểm thi cho môn HTML
+DECLARE @soKQ INT;
+EXEC dbo.usp_updateMarkPoint
+    @ma_monhoc = 105,          -- tinyint
+    @diemthi = 3,            -- tinyint
+    @sodong = @soKQ OUTPUT -- int
+SELECT @soKQ AS N'Số lương bài thi đã được thay điểm'
+GO 
+
+--Xem nội dung đã được viết cho store [usp_updateMarkPoint]
+sp_helptext usp_updateMarkPoint
+GO 
+
+--Sử dụng WITH ENCRYPTION/RECOMPILE	 (ghi sau biến @ và ghi trước AS)
+--ENCRYPTION : Nội dung store ẩn đi không cho ai xem hết ( Nhớ lưu lại file script ) 
+--RECOMPLIE :  Truy vấn sẽ không được lưu ở bộ nhớ đệm (cache) cho thủ tục này.
+--EXECUTE AS clause: Xác định ngữ cảnh bảo mật để thực thi thủ tục.
+
+
+ALTER PROC usp_SinhVien 
+WITH ENCRYPTION
+AS 
+BEGIN
+	--Lệnh 1  : Liệt kê danh sách sinh viên nam
+	SELECT * 
+	FROM dbo.tbStudent 
+	WHERE st_gender=1 ;
+	--Lệnh 2 : Liệt kê danh sách sinh viên nữ
+	SELECT * 
+	FROM dbo.tbStudent 
+	WHERE st_gender=0 ;
+END 
+GO  
+
+-- Xem phần định nghĩa của usp_SinhVien 
+sp_helptext usp_SinhVien
+GO 
