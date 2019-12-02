@@ -37,9 +37,12 @@ WHERE sub_id=100
 ORDER BY mark 
 GO 
 
---Liệt kê kết quả môn C / Sắp xếp theo điểm tăng dần
---Cập nhật : tăng 2 điểm cho các kết quả < 40 đ của môn C
---Liệt kê bảng môn C
+/*
+	Viết store usp_updateC thực hiện việc tăng 2 điểm môn C đối với các kết quả < 40 đ 
+	-Lệnh 1 : Liệt kê kết quả môn C / Sắp xếp theo điểm tăng dần
+	-Lệnh 2 : Cập nhật : tăng 2 điểm cho các kết quả < 40 đ của môn C
+	-Lệnh 3 : Liệt kê bảng môn C
+*/
 CREATE PROC usp_updateC AS
 BEGIN
 	--Liệt kê kết quả môn C / Sắp xếp theo điểm tăng dần
@@ -62,3 +65,4 @@ GO
 --Gọi / Thi hành công việc của store prodedure usp_updateC
 EXEC dbo.usp_updateC
 GO 
+
