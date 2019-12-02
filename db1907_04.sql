@@ -29,3 +29,36 @@ GO
 --Gọi / Thi hành công việc của store prodedure usp_SinhVien
 EXEC dbo.usp_SinhVien
 GO 
+
+--Liệt kê kết quả môn C
+SELECT *
+FROM dbo.tbExam
+WHERE sub_id=100
+ORDER BY mark 
+GO 
+
+--Liệt kê kết quả môn C / Sắp xếp theo điểm tăng dần
+--Cập nhật : tăng 2 điểm cho các kết quả < 40 đ của môn C
+--Liệt kê bảng môn C
+CREATE PROC usp_updateC AS
+BEGIN
+	--Liệt kê kết quả môn C / Sắp xếp theo điểm tăng dần
+	SELECT *
+	FROM dbo.tbExam
+	WHERE sub_id=100
+	ORDER BY mark  ;
+	--Cập nhật : tăng 2 điểm cho các kết quả < 40 đ của môn C
+	UPDATE dbo.tbExam
+	SET mark=mark+2
+	WHERE sub_id=100 AND mark<40;
+	--Liệt kê bảng môn C
+	SELECT *
+	FROM dbo.tbExam
+	WHERE sub_id=100
+	ORDER BY mark  ;
+END 
+GO 
+
+--Gọi / Thi hành công việc của store prodedure usp_updateC
+EXEC dbo.usp_updateC
+GO 
