@@ -1,4 +1,4 @@
---Tạo cơ sở dữ liệu lớp 1907
+﻿--Tạo cơ sở dữ liệu lớp 1907
 CREATE DATABASE db_1907
 GO
 
