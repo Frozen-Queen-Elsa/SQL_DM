@@ -210,7 +210,7 @@ GO
 -- 3c. list of students who have more 18 year-old, consisting of the columns: rollno, full name (lastname + firstname), gender, dob, address, batchno, roomno
 
 --Cách 1 Xài SubQuerry
-SELECT a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,a.[Address],b.BatchNo,b.RoomNo
+SELECT a.RollNo,(a.LastName +' '+ a.FirstName) AS [FullName],a.Gender,a.DoB,a.[Address],b.BatchNo,b.RoomNo
 FROM dbo.tbStudent a, dbo.tbBatch b 
 WHERE a.RollNo IN (SELECT a.RollNo FROM dbo.tbStudent WHERE DATEDIFF(yy,a.DoB,GETDATE())>18) 
 	  AND 
@@ -218,7 +218,7 @@ WHERE a.RollNo IN (SELECT a.RollNo FROM dbo.tbStudent WHERE DATEDIFF(yy,a.DoB,GE
 GO 
 
 --Cách 2 Xài Join
-SELECT  a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,a.[Address],b.BatchNo,b.RoomNo 
+SELECT  a.RollNo,(a.LastName +' '+ a.FirstName) AS [FullName],a.Gender,a.DoB,a.[Address],b.BatchNo,b.RoomNo 
 FROM dbo.tbStudent a JOIN dbo.tbBatch b ON b.BatchNo = a.BatchNo
 WHERE DATEDIFF(yy,a.DoB,GETDATE())>18
 GO 
@@ -227,7 +227,27 @@ GO
 
  CREATE VIEW vwSchoolBoy
  AS 
- SELECT a.RollNo,a.LastName,.a.FirstName,DATEDIFF(yy,a.DoB,GETDATE()) AS 'Age'
+ SELECT a.RollNo,a.LastName,a.FirstName,DATEDIFF(yy,a.DoB,GETDATE()) AS [Age],b.BatchNo,b.TimeSlot
  FROM dbo.tbStudent a JOIN dbo.tbBatch b ON b.BatchNo = a.BatchNo
  WHERE a.Gender='M'
+ WITH CHECK OPTION
+ GO 
+
+ SELECT * FROM dbo.vwSchoolBoy
+ GO 
+
+ -- 5. Create a view vwNewStudent to see information of students enrolled in this year which contained the columns Rollno, full name, gender, DOB, BatchNo, roomNo.
+ SELECT * 
+ FROM dbo.tbStudent
+ ORDER BY EnrollYear desc
+ GO 
+
+ CREATE VIEW vwNewStudent
+ AS 
+ SELECT a.RollNo,(a.LastName +' '+ a.FirstName) AS [FullName],a.Gender,a.DoB,b.BatchNo,b.RoomNo
+ FROM dbo.tbStudent a JOIN dbo.tbBatch b ON b.BatchNo = a.BatchNo
+ WHERE a.EnrollYear=YEAR(GETDATE())
+ GO 
+
+ SELECT * FROM dbo.vwNewStudent
  GO 
