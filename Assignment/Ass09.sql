@@ -391,5 +391,80 @@ UPDATE dbo.tbHocVien SET HoTen=N'Seohyun' WHERE MaHV='HV02'
 GO 
 
 --10. Tạo (instead of delete) Trigger trLop khi xóa 1 lớp học thì sẽ xóa luôn các dữ liệu đăng ký lớp học đó trong bảng đăng ký.
-CREATE TRIGGER trlop
-ON 
+CREATE TRIGGER trLop
+ON dbo.tbLopHoc
+INSTEAD OF DELETE AS 
+BEGIN	
+	DELETE FROM dbo.tbDangKy WHERE MaLop IN 
+	(SELECT MaLop FROM Deleted)
+	DELETE FROM dbo.tbLopHoc WHERE MaLop IN 
+	(SELECT MaLop FROM Deleted)
+END 
+GO 
+
+--Tạo dữ liệu để test trigger
+INSERT dbo.tbLopHoc
+    (
+        MaLop,
+        TenLop,
+        SiSo,
+        MaGV
+    )
+VALUES
+    (
+        'LH10', -- MaLop - varchar(5)
+        N'Lớp Tạo Cho Vui', -- TenLop - varchar(30)
+        20,  -- SiSo - int
+        'GV01'  -- MaGV - varchar(5)
+    ),
+    (
+        'LH11', -- MaLop - varchar(5)
+        N'Lớp Tạo Chút Xóa', -- TenLop - varchar(30)
+        10,  -- SiSo - int
+        'GV02'  -- MaGV - varchar(5)
+    )
+GO 
+
+INSERT dbo.tbDangKy
+    (
+        MaHV,
+        MaLop,
+        NgayDK,
+        GhiChu
+    )
+VALUES
+    (
+        'HV09',        -- MaHV - varchar(5)
+        'LH10',        -- MaLop - varchar(5)
+        GETDATE(), -- NgayDK - date
+        '123'         -- GhiChu - varchar(100)
+    ),	
+    (
+        'HV07',        -- MaHV - varchar(5)
+        'LH10',        -- MaLop - varchar(5)
+        GETDATE(), -- NgayDK - date
+        'dfd3'         -- GhiChu - varchar(100)
+    ),
+    (
+        'HV07',        -- MaHV - varchar(5)
+        'LH11',        -- MaLop - varchar(5)
+        GETDATE(), -- NgayDK - date
+        '13253'         -- GhiChu - varchar(100)
+    ),
+    (
+        'HV02',        -- MaHV - varchar(5)
+        'LH11',        -- MaLop - varchar(5)
+        GETDATE(), -- NgayDK - date
+        '545'         -- GhiChu - varchar(100)
+    )
+GO 
+
+SELECT * FROM dbo.tbLopHoc
+SELECT * FROM dbo.tbDangKy
+
+--Xóa thử 2 Lớp vừa tạo mã LH10 và Lh11
+DELETE FROM dbo.tbLopHoc WHERE MaLop = 'LH11'
+GO 
+
+DELETE FROM dbo.tbLopHoc WHERE MaLop = 'LH10'
+GO 
