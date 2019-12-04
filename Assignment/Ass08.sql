@@ -193,3 +193,21 @@ VALUES
         3   -- SoLuong - smallint
     )
 GO 
+
+-- b) Hiển thị các Don Hang đã quá 1 năm so với ngày hiện hành
+SELECT *
+FROM dbo.tbDonHang
+WHERE DATEDIFF(dd,NgayDat,GETDATE())>365
+GO  
+
+-- c) Xác định tên mặt hàng nào được đặt mua nhiều lần nhất
+SELECT *
+FROM dbo.tbCTDonHang
+ORDER BY MaMH
+GO 
+
+SELECT MaMH,SUM(SoLuong) AS N'Tổng số đặt hàng'
+FROM dbo.tbCTDonHang
+GROUP BY MaMH 
+ORDER BY SUM(SoLuong) desc
+GO 
