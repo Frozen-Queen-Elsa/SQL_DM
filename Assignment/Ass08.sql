@@ -139,3 +139,57 @@ VALUES
         0       -- DaThanhToan - bit
     )
 GO 
+
+INSERT dbo.tbCTDonHang
+    (
+        MaDH,
+        MaMH,
+        SoLuong
+    )
+VALUES
+    (
+        1,  -- MaDH - int
+        'P02', -- MaMH - varchar(5)
+        5   -- SoLuong - smallint
+    ),
+    (
+        1,  -- MaDH - int
+        'P03', -- MaMH - varchar(5)
+        1   -- SoLuong - smallint
+    ),
+    (
+        2,  -- MaDH - int
+        'P01', -- MaMH - varchar(5)
+        10   -- SoLuong - smallint
+    ),
+    (
+        3,  -- MaDH - int
+        'P05', -- MaMH - varchar(5)
+        2   -- SoLuong - smallint
+    ),
+    (
+        3,  -- MaDH - int
+        'P04', -- MaMH - varchar(5)
+        2   -- SoLuong - smallint
+    ),
+    (
+        3,  -- MaDH - int
+        'P03', -- MaMH - varchar(5)
+        1   -- SoLuong - smallint
+    ),
+    (
+        4,  -- MaDH - int
+        'P03', -- MaMH - varchar(5)
+        2   -- SoLuong - smallint
+    ),	
+    (
+        5,  -- MaDH - int
+        'P01', -- MaMH - varchar(5)
+        12   -- SoLuong - smallint
+    ),
+    (
+        5,  -- MaDH - int
+        'P03', -- MaMH - varchar(5)
+        3   -- SoLuong - smallint
+    )
+GO 
