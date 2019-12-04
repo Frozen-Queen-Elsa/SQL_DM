@@ -81,8 +81,9 @@ END
 GO 
 
 --Cập nhật lại số tiết môn học DM(125) =101 : Lỗi 
-UPDATE dbo.tb
-Subject SET sub_hours=101 WHERE sub_id=125
+UPDATE dbo.tbSubject
+SET sub_hours=101 
+WHERE sub_id=125
 GO 
 SELECT * FROM dbo.tbSubject
 GO 
@@ -107,4 +108,25 @@ GO
 UPDATE dbo.tbStudent 
 SET st_id='ST31' 
 WHERE st_id='ST21'
+GO 
+
+--Viết trigger delete : Không cho phép xóa kết quả thi môn lập trình C : (100)
+CREATE TRIGGER tgDeleteExam ON dbo.tbExam 
+FOR DELETE AS 
+BEGIN
+	IF(EXISTS (SELECT Deleted.sub_id FROM Deleted WHERE Deleted.sub_id=105))
+	BEGIN 
+		PRINT N'Không được phép xóa kết quả thi của môn học này !'
+		ROLLBACK
+	END 
+END 
+GO 
+
+SELECT * 
+FROM dbo.tbExam
+WHERE st_id LIKE'ST01'
+GO 
+
+DELETE FROM dbo.tbExam
+WHERE st_id = 'ST01'
 GO 
