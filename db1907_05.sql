@@ -137,3 +137,12 @@ GO
 --Xem cấu trúc lệnh của trigger = sp_helptext
 sp_helptext tgUpdateStudent
 GO 
+
+--Tổng kết cuối ngày
+--Table để lưu dữ liệu 1 đối tượng
+--View để truy vấn , cập nhật dữ liệu bảng gốc 1 cách có điều kiện	 ( tăng cường tính bảo mật hệ thống )
+--Store để quản lý công việc hệ thống 1 cách tối ưu hơn	(tối ưu hóa công việc , đường truyền )
+--Index để tăng tốc độ truy vấn / truy cập dữ liệu ( Giúp làm sao truy vấn dữ liệu 1 cách nhanh nhất) 
+
+--Trigger để tạo 1 event tự động khi có 1 thao tác tác động trên bảng (Khi có các hoạt động Insert, Update, Delete ) ,ko có tham số  . 70% các hoạt động trên Trigger hoạt động DML ( Insert,Update,Dalete) . Còn lại thì sửa dụng trên ( Create,Alter,Drop ) 
+-- Trigger có 2 loại là After Trigger hoặc Instead of Trigger
