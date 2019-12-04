@@ -1,4 +1,4 @@
-CREATE DATABASE Ass6_db
+﻿CREATE DATABASE Ass6_db
 ON	
 ( NAME='Ass6',FILENAME='D:\Study\Aptech\Season1\SQL\Database\Ass6.mdf',
   SIZE=5,FILEGROWTH=10%,MAXSIZE=5
