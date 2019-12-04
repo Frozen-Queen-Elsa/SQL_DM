@@ -212,8 +212,37 @@ GROUP BY MaMH
 ORDER BY SUM(SoLuong) desc
 GO 
 
--- c) Xác định tên mặt hàng nào được đặt mua nhiều lần nhất
+-- d) Tạo view vwDH để liệt kê các DON HANG chưa thanh toán trên 30 ngày so với ngày hiện hành
 CREATE VIEW vwDH
 AS 
-SELECT
-FROM  
+SELECT *
+FROM dbo.tbDonHang
+WHERE DaThanhToan =0 AND DATEDIFF(dd,NgayDat,GETDATE())>30
+GO 
+
+SELECT * FROM dbo.vwDH
+GO
+
+-- e) Tạo 1 Stored procedure uspKH nhận tham số input @hoten là tên khách hàng, liệt kê chi tiết các thông tin về các đơn hàng của khách hàng này.
+SELECT *
+FROM dbo.tbCTDonHang
+GO 
+
+SELECT *
+FROM dbo.tbDonHang
+GO 
+ a.MaKH,a.HoTen,a.DiaChi,b.MaDH,c.MaMH,c.TenMH,
+CREATE PROCEDURE uspKH
+@hoten NVARCHAR(40)
+AS 
+BEGIN 
+	SELECT*
+	FROM (dbo.tbKhachHang a JOIN ((dbo.tbCTDonHang b JOIN dbo.tbMatHang c ON c.MaMH = b.MaMH) JOIN dbo.tbDonHang d ON d.MaDH = b.MaDH) ON b.MaKH = a.MaKH)
+	WHERE a.HoTen=@hoten ;	
+END 
+GO 
+
+EXEC dbo.uspKH
+    @hoten = N'An An' -- nvarchar(40)
+GO 
+ 
