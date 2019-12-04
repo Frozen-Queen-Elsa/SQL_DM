@@ -68,7 +68,7 @@ SELECT * FROM dbo.tbSubject
 GO 
 
 --Viết trigger update : không cho phép thêm sửa số tiết của 1 môn học > 100
-CREATE TRIGGER tbUpdateSub
+CREATE TRIGGER tgUpdateSub
 ON dbo.tbSubject
 FOR UPDATE AS
 BEGIN
@@ -80,3 +80,25 @@ BEGIN
 END 
 GO 
 
+--Cập nhật lại số tiết môn học DM(125) =101 : Lỗi 
+UPDATE dbo.tb
+Subject SET sub_hours=101 WHERE sub_id=125
+GO 
+SELECT * FROM dbo.tbSubject
+GO 
+
+--Viết trigger không cho phép đổi mã số sinh viên trên bảng sinh viên 
+CREATE TRIGGER tgUpdateStudent
+ON dbo.tbStudent
+FOR UPDATE AS
+BEGIN
+	IF UPDATE(st_id)
+	BEGIN
+		PRINT N'Không thể đổi mã số sinh viên !!!'
+		ROLLBACK
+	END 
+END 
+GO 
+
+SELECT * FROM dbo.tbStudent
+GO	
