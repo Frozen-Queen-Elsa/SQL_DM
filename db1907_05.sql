@@ -132,8 +132,7 @@ WHERE st_id = 'ST01'
 GO 
 
 --Instead Of Delete Trigger : Xóa toàn bộ các bảng có liên kết với dữ liệu ở bảng cần xóa .Xóa bảng lá trước xóa bảng gốc sau 
---Vd : Xóa Student A trong bảng tbStudent thì phải 
---	   xóa cả thông tin điểm thi của Student A trong bảng tbExam sau đó xóa Student A trong bảng tbStudent
+--Vd : Xóa Student A trong bảng tbStudent thì phải xóa cả thông tin điểm thi của Student A trong bảng tbExam sau đó xóa Student A trong bảng tbStudent
 
 --Xem cấu trúc lệnh của trigger = sp_helptext
 sp_helptext tgUpdateStudent
