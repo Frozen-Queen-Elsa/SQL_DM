@@ -184,7 +184,7 @@ GO
 sp_helptext usp_SinhVien
 GO 
 
-
+--Tổng kết cuối ngày
 --Table để lưu dữ liệu 1 đối tượng
 --View để truy vấn , cập nhật dữ liệu bảng gốc 1 cách có điều kiện	 ( tăng cường tính bảo mật hệ thống )
 --Store để quản lý công việc hệ thống 1 cách tối ưu hơn	(tối ưu hóa công việc , đường truyền )
