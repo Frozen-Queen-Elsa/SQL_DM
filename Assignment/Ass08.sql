@@ -224,20 +224,18 @@ SELECT * FROM dbo.vwDH
 GO
 
 -- e) Tạo 1 Stored procedure uspKH nhận tham số input @hoten là tên khách hàng, liệt kê chi tiết các thông tin về các đơn hàng của khách hàng này.
-SELECT *
-FROM dbo.tbCTDonHang
-GO 
+SELECT * FROM dbo.tbCTDonHang
+SELECT * FROM dbo.tbDonHang
+SELECT *  FROM dbo.tbKhachHang
+SELECT *  FROM dbo.tbMatHang
 
-SELECT *
-FROM dbo.tbDonHang
-GO 
- a.MaKH,a.HoTen,a.DiaChi,b.MaDH,c.MaMH,c.TenMH,
+
 CREATE PROCEDURE uspKH
 @hoten NVARCHAR(40)
 AS 
 BEGIN 
-	SELECT*
-	FROM (dbo.tbKhachHang a JOIN ((dbo.tbCTDonHang b JOIN dbo.tbMatHang c ON c.MaMH = b.MaMH) JOIN dbo.tbDonHang d ON d.MaDH = b.MaDH) ON b.MaKH = a.MaKH)
+	SELECT a.MaKH,a.HoTen,a.DiaChi,b.MaDH,b.NgayDat,b.DaThanhToan,d.MaMH,d.TenMH,c.SoLuong,d.DonViTinh,d.DonGia
+	FROM ((dbo.tbKhachHang a JOIN dbo.tbDonHang b ON b.MaKH = a.MaKH ) JOIN (dbo.tbCTDonHang c JOIN dbo.tbMatHang d ON d.MaMH = c.MaMH) ON	c.MaDH=b.MaDH )
 	WHERE a.HoTen=@hoten ;	
 END 
 GO 
@@ -245,4 +243,5 @@ GO
 EXEC dbo.uspKH
     @hoten = N'An An' -- nvarchar(40)
 GO 
+
  
