@@ -102,3 +102,9 @@ GO
 
 SELECT * FROM dbo.tbStudent
 GO	
+
+--Kiểm tra trigger : Đổi mã số sinh viên ST21 ->ST31
+UPDATE dbo.tbStudent 
+SET st_id='ST31' 
+WHERE st_id='ST21'
+GO 
