@@ -1,4 +1,4 @@
-USE db_1907
+﻿USE db_1907
 GO
 
 SELECT * FROM dbo.tbStudent
