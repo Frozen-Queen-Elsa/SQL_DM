@@ -211,3 +211,9 @@ FROM dbo.tbCTDonHang
 GROUP BY MaMH 
 ORDER BY SUM(SoLuong) desc
 GO 
+
+-- c) Xác định tên mặt hàng nào được đặt mua nhiều lần nhất
+CREATE VIEW vwDH
+AS 
+SELECT
+FROM  
