@@ -57,3 +57,26 @@ GO
 
 SELECT * FROM dbo.tbSubject 
 GO 
+
+--Cập nhật lại số tiết học môn XML =101 !!!
+UPDATE dbo.tbSubject 
+SET sub_hours =101
+WHERE sub_id=135  
+GO 
+
+SELECT * FROM dbo.tbSubject
+GO 
+
+--Viết trigger update : không cho phép thêm sửa số tiết của 1 môn học > 100
+CREATE TRIGGER tbUpdateSub
+ON dbo.tbSubject
+FOR UPDATE AS
+BEGIN
+	IF(SELECT sub_hours FROM Inserted)>100
+	BEGIN	
+		PRINT N'Số tiết học không thể > 100 !! Từ chối thay đổi'
+		ROLLBACK
+	END 
+END 
+GO 
+
