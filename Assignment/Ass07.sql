@@ -210,7 +210,7 @@ GO
 -- 3c. list of students who have more 18 year-old, consisting of the columns: rollno, full name (lastname + firstname), gender, dob, address, batchno, roomno
 
 --Cách 1 Xài SubQuerry
-SELECT a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,DATEDIFF(yy,DoB,GETDATE()) AS N'Tuổi',a.[Address],b.BatchNo,b.RoomNo
+SELECT a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,a.[Address],b.BatchNo,b.RoomNo
 FROM dbo.tbStudent a, dbo.tbBatch b 
 WHERE a.RollNo IN (SELECT a.RollNo FROM dbo.tbStudent WHERE DATEDIFF(yy,a.DoB,GETDATE())>18) 
 	  AND 
@@ -218,8 +218,16 @@ WHERE a.RollNo IN (SELECT a.RollNo FROM dbo.tbStudent WHERE DATEDIFF(yy,a.DoB,GE
 GO 
 
 --Cách 2 Xài Join
-SELECT  a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,DATEDIFF(yy,DoB,GETDATE()) AS N'Tuổi',a.[Address],b.BatchNo,b.RoomNo 
+SELECT  a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,a.[Address],b.BatchNo,b.RoomNo 
 FROM dbo.tbStudent a JOIN dbo.tbBatch b ON b.BatchNo = a.BatchNo
 WHERE DATEDIFF(yy,a.DoB,GETDATE())>18
 GO 
  
+ -- 4. Create a view vwSchoolBoy to contain information of schoolboys which consist of columns Rollno, LastName, FirstName, age, BatchNo and Timeslot. This view needs to check for domain integrity.
+
+ CREATE VIEW vwSchoolBoy
+ AS 
+ SELECT a.RollNo,a.LastName,.a.FirstName,DATEDIFF(yy,a.DoB,GETDATE()) AS 'Age'
+ FROM dbo.tbStudent a JOIN dbo.tbBatch b ON b.BatchNo = a.BatchNo
+ WHERE a.Gender='M'
+ GO 
