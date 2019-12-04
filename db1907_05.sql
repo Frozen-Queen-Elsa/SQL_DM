@@ -39,3 +39,21 @@ GO
 
 SELECT * FROM dbo.tbSubject
 GO 
+
+-- 2. Tình huống thêm môn học mới có số tiết >-10:ok !
+INSERT dbo.tbSubject
+    (
+        sub_name,
+        sub_fee,
+        sub_hours
+    )
+VALUES
+    (
+        'XML', -- sub_name - varchar(30)
+        80,  -- sub_fee - smallint
+        10   -- sub_hours - tinyint
+    )
+GO	
+
+SELECT * FROM dbo.tbSubject 
+GO 
