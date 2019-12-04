@@ -362,4 +362,34 @@ EXEC dbo.uspGV
     @HoTenGV = N'Bill Gate' -- nvarchar(50)
 GO 
 
+-- 8. Tạo (insert, update) Trigger trDangky bảo đảm 1 học viên chỉ được đăng ký tối đa 2 lớp
 
+-- Tạo Trigger Insert  ????????
+CREATE TRIGGER trDangKy
+ON dbo.tbDangKy
+FOR INSERT AS 
+BEGIN
+	DECLARE @solop=
+END 
+GO 
+
+
+-- 9. Tạo (update) Trigger trHVTen không cho phép đổi tên học viên
+CREATE TRIGGER trHVTen
+ON dbo.tbHocVien
+AFTER UPDATE AS
+BEGIN 
+	IF UPDATE(HoTen)
+	BEGIN 
+		PRINT N'Không thể đổi tên học viên'
+		ROLLBACK
+	END 
+END
+GO 
+
+UPDATE dbo.tbHocVien SET HoTen=N'Seohyun' WHERE MaHV='HV02'
+GO 
+
+--10. Tạo (instead of delete) Trigger trLop khi xóa 1 lớp học thì sẽ xóa luôn các dữ liệu đăng ký lớp học đó trong bảng đăng ký.
+CREATE TRIGGER trlop
+ON 
