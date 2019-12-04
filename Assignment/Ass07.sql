@@ -1,4 +1,4 @@
---1 . Create a database called ASM7 which has two data files: one belongs to Primary group, and the other belongs to the secondary file group named �MyFileGroup� with the size, max size, file growth are 10MB, 15MB, and 20%, respectively.
+﻿--1 . Create a database called ASM7 which has two data files: one belongs to Primary group, and the other belongs to the secondary file group named ‘MyFileGroup’ with the size, max size, file growth are 10MB, 15MB, and 20%, respectively.
 CREATE DATABASE dbASM7
 ON PRIMARY
 (NAME='dbASM7',FILENAME='D:\Study\Aptech\Season1\SQL\Database\dbASM7.mdf',SIZE=10,MAXSIZE=15,FILEGROWTH=20%),
@@ -11,12 +11,12 @@ GO
 
 
 --2 .Create the the following tables: 
--- a. �tbBatch� table
--- b. �tbStudent� table
+-- a. “tbBatch” table
+-- b. “tbStudent” table
 --	- Write a query (check constraint) to accept only positive number and less than (<) 6 in the Size field of table	tbBatch
---	- Write a query (check constraint) to accept only 2 values �M� and �F� in the Gender field of table tbStudent
+--	- Write a query (check constraint) to accept only 2 values ‘M’ and ‘F’ in the Gender field of table tbStudent
 --	- Write a query (check constraint) to accept only value of field EnrollYear >=2000
---	- Add at least 4 records in table �tbBatch� and 8 records in table �tbStudent�
+--	- Add at least 4 records in table “tbBatch” and 8 records in table “tbStudent”
 
 CREATE TABLE tbBatch
 (
@@ -113,7 +113,7 @@ VALUES
         'Taylor',        -- LastName - varchar(20)
         'Swift',        -- FirstName - varchar(20)
         'F',        -- Gender - varchar(1)
-        '19910808', -- DoB - date
+        '20050808', -- DoB - date
         'USA',        -- Address - varchar(40)
         '2018',         -- EnrollYear - smallint
         'Country'         -- BatchNo - varchar(10)
@@ -123,7 +123,7 @@ VALUES
         'Kim',        -- LastName - varchar(20)
         'Taeyeon',        -- FirstName - varchar(20)
         'F',        -- Gender - varchar(1)
-        '19890101', -- DoB - date
+        '20060101', -- DoB - date
         'Korea',        -- Address - varchar(40)
         '2010',         -- EnrollYear - smallint
         'KPop'         -- BatchNo - varchar(10)
@@ -163,7 +163,7 @@ VALUES
         'Christina',        -- LastName - varchar(20)
         'Anguilera',        -- FirstName - varchar(20)
         'F',        -- Gender - varchar(1)
-        '19800506', -- DoB - date
+        '20020506', -- DoB - date
         'Korea',        -- Address - varchar(40)
         '2005',         -- EnrollYear - smallint
         'Pop'         -- BatchNo - varchar(10)
@@ -189,3 +189,37 @@ VALUES
         'Pop'         -- BatchNo - varchar(10)
     )
 GO 
+
+--3. Write Queries to retrieve the following information :
+--	a. list of students sorted by gender and date of birth
+--	b. count number of students grouped by gender .
+--	c. list of students who have more 18 year-old, consisting of the columns: rollno, full name (lastname + firstname), gender, dob, address, batchno, roomno
+
+-- 3a list of students sorted by gender and date of birth
+SELECT *
+FROM dbo.tbStudent
+ORDER BY Gender, DoB   -- Hỏi lại cô thế này là sắp xếp theo 2 cái chưa ?
+GO 
+
+-- 3b. count number of students grouped by gender .
+SELECT Gender,COUNT(*) AS N'Tổng số học sinh' 
+FROM dbo.tbStudent
+GROUP BY Gender
+GO 
+
+-- 3c. list of students who have more 18 year-old, consisting of the columns: rollno, full name (lastname + firstname), gender, dob, address, batchno, roomno
+
+--Cách 1 Xài SubQuerry
+SELECT a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,DATEDIFF(yy,DoB,GETDATE()) AS N'Tuổi',a.[Address],b.BatchNo,b.RoomNo
+FROM dbo.tbStudent a, dbo.tbBatch b 
+WHERE a.RollNo IN (SELECT a.RollNo FROM dbo.tbStudent WHERE DATEDIFF(yy,a.DoB,GETDATE())>18) 
+	  AND 
+	  b.BatchNo IN (SELECT BatchNo FROM dbo.tbBatch WHERE BatchNo=a.BatchNo)
+GO 
+
+--Cách 2 Xài Join
+SELECT  a.RollNo,(a.LastName + a.FirstName) AS [FullName],a.Gender,a.DoB,DATEDIFF(yy,DoB,GETDATE()) AS N'Tuổi',a.[Address],b.BatchNo,b.RoomNo 
+FROM dbo.tbStudent a JOIN dbo.tbBatch b ON b.BatchNo = a.BatchNo
+WHERE DATEDIFF(yy,a.DoB,GETDATE())>18
+GO 
+ 
