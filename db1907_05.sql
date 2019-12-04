@@ -22,7 +22,7 @@ END
 GO 
 
 --Kiểm thử trigger :
---1. Tình huống thêm môn học mới có số tiết >100 : sẽ bị từ chối
+	--1. Tình huống thêm môn học mới có số tiết >100 : sẽ bị từ chối
 INSERT dbo.tbSubject
     (
         sub_name,
@@ -40,7 +40,7 @@ GO
 SELECT * FROM dbo.tbSubject
 GO 
 
--- 2. Tình huống thêm môn học mới có số tiết >-10:ok !
+	-- 2. Tình huống thêm môn học mới có số tiết >-10:ok !
 INSERT dbo.tbSubject
     (
         sub_name,
