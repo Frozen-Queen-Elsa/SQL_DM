@@ -73,7 +73,7 @@ GO
 	-Lệnh 3 : Liệt kê bảng môn yêu cầu
 */
 CREATE PROCEDURE usp_updateMark	
-					@ma_monhoc TINYINT 
+@ma_monhoc TINYINT 
 AS
 BEGIN
 	--Lệnh 1 : Liệt kê kết quả môn đk yêu cầu / Sắp xếp theo điểm tăng dần
