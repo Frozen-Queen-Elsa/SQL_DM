@@ -1,4 +1,4 @@
---Kiểm tra 1 file có tồn tại không ?
+﻿--Kiểm tra 1 file có tồn tại không ?
 --Kiểm tra file ko tồn tại
 xp_fileexist 'D:\FILE.abc'
 GO
