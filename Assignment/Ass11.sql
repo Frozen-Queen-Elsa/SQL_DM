@@ -209,8 +209,9 @@ BEGIN
 END
 GO 
 
+--Thử store với Item IT001 thêm 10Qoh
 EXEC dbo.uspIncreaseQOH
-    @ma_item = 'IT01', -- varchar(5)
+    @ma_item = 'IT001', -- varchar(5)
     @soluong = 10   -- int
 GO 
 
