@@ -1,4 +1,4 @@
-/*
+﻿/*
 	1. Create a database named Ass10_Db with the following specifications :
 	a. Primary file group with the data file Ass10.mdf. The size, maximum size, and file growth should be 5, 50 and 10% respectively.
 	b. File group Group1 with the data file Ass10_1.ndf. The size, maximum size, and file growth should be 10, unlimited, and 5 respectively.
@@ -119,7 +119,7 @@ VALUES
     ),
     (
         'C004',        -- CustCode - varchar(5)
-        'Please send new monthly brochure �',        -- MsgDetail - varchar(300)
+        'Please send new monthly brochure …',        -- MsgDetail - varchar(300)
         '20141108', -- MsgDate - date
         'Pending'         -- Status - varchar(10)
     )
@@ -144,11 +144,11 @@ WHERE NOT EXISTS(SELECT * FROM dbo.tbMessage b WHERE a.CustCode=b.CustCode)
 GO 
 
 /*
-	6. Create a view vReport which displays messages sended after 1 � Sep � 2014 as following:
+	6. Create a view vReport which displays messages sended after 1 – Sep – 2014 as following:
 		MsgNo MsgDetails			DatePosted	 PostedBy			Status
-		1002  Please send all �		09/05/2014	 RahulKhana			Resolved
-		1003  Please send new�		11/08/2014	 Sanjay Gupta		Pending
-		�
+		1002  Please send all …		09/05/2014	 RahulKhana			Resolved
+		1003  Please send new…		11/08/2014	 Sanjay Gupta		Pending
+		…
 	Note: The definition of view must be hidden from users.
 */
 CREATE VIEW vReport 
@@ -160,3 +160,35 @@ GO
 
 SELECT * FROM dbo.vReport
 GO 
+
+/*
+	7. Create a store procedure uspChangeStatus to modify CustStatus column in Customer table from “invalid” to “valid” and display the number of records were changed.
+*/
+
+CREATE PROC uspChangeStatus
+@sodong INT OUTPUT 
+AS
+BEGIN 
+	--Bước 1 Liệt kê danh sách Customer sắp xếp theo Status
+	SELECT *
+	FROM dbo.tbCustomer 
+	ORDER BY CustStatus;
+	--Bước 2 Cập nhật Status 
+	UPDATE dbo.tbCustomer 
+	SET CustStatus='Valid' 
+	WHERE CustStatus='Invalid' ;
+	--Bước 3 Cập nhật biến Output
+	SET @sodong=@@ROWCOUNT
+	--Bước 4 Liệt kê bảng sau khi update
+	SELECT *
+	FROM dbo.tbCustomer 
+	ORDER BY CustStatus;
+END 
+GO 
+
+DECLARE @SoKQ INT;
+EXEC dbo.uspChangeStatus
+    @sodong = @SoKQ OUTPUT -- int
+SELECT @SoKQ AS N'Number of Records Changed'
+GO 
+
