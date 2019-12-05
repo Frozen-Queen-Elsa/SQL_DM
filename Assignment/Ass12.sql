@@ -272,3 +272,38 @@ GO
 SELECT * FROM dbo.vwNSX
 GO 
 
+/*
+	8. Tạo stored procedure tên uspDONGIA, thực hiện các tác vụ sau
+	a. In danh sách các sản phẩm
+	b. Tăng đồng loạt đơn giá của các sản phẩm có đơn giá dưới 2,000 lên thêm x đồng (với x là tham số của store – mặc định là 100)
+	c. In ra số sản phẩm đã được tăng giá
+	d. In lại danh sách các sản phẩm sau khi tang giá
+*/
+CREATE PROC uspDongGia
+@x INT ,@sodong INT OUTPUT
+AS
+BEGIN 
+	--Lệnh 1 :
+	SELECT *
+	FROM dbo.HangHoa	;
+	--Lệnh 2 :
+	UPDATE dbo.HangHoa
+	SET DonGia+=@x
+	WHERE DonGia<2000 ;
+	--Lệnh 3 : 
+	SET @sodong =@@ROWCOUNT
+	--Lệnh 4 :
+	SELECT *
+	FROM dbo.HangHoa
+END
+GO 
+
+DECLARE @soKQ INT;
+EXEC dbo.uspDongGia
+    @x = 100,                  -- int
+    @sodong = @soKQ OUTPUT -- int
+SELECT @soKQ AS N'Số lượng sản phẩm đã thay đổi'
+GO 
+
+
+
