@@ -305,5 +305,59 @@ EXEC dbo.uspDongGia
 SELECT @soKQ AS N'Số lượng sản phẩm đã thay đổi'
 GO 
 
+/*
+	9. Viết trigger tgTENNSX cấm đổi tên nhà sản xuất
+*/
+CREATE TRIGGER tgTenNSX
+ON dbo.DMNSX
+FOR UPDATE AS 
+BEGIN 
+	IF UPDATE(TenNSX)
+	BEGIN
+		PRINT N'Bạn không thể đổi tên của Nhà Sản Xuất'
+		ROLLBACK 
+	END    
+END
+GO 
 
+--Kiểm tra trigger update NSX SamSung > Apple xem có báo lỗi không
+UPDATE dbo.DMNSX SET TenNSX='Apple' WHERE TenNSX='SamSung'
+GO 
 
+/*
+	10. Viết trigger tgTENHH, không cho phép tên hàng hóa ít hơn 3 ký tự.
+*/
+CREATE TRIGGER tgTenHH
+ON dbo.HangHoa
+INSTEAD OF INSERT,Update AS 
+BEGIN
+	IF (SELECT LEN(Inserted.TenHH) FROM Inserted )<3
+	BEGIN
+		PRINT N'Tên hàng hóa không thể ít hơn 3 ký tự'
+		ROLLBACK
+    END 
+END
+GO 
+
+--Kiểm tra Trigger = lệnh Insert
+INSERT dbo.HangHoa
+    (
+        MaHH,
+        TenHH,
+        MaNSX,
+        SL,
+        DonGia
+    )
+VALUES
+    (
+        'LG03',  -- MaHH - varchar(4)
+        N'LG', -- TenHH - nvarchar(40)
+        'LG',  -- MaNSX - varchar(2)
+        10,   -- SL - int
+        1000    -- DonGia - int
+    )
+GO 
+
+--Kiểm tra Trigger = lệnh Update
+UPDATE dbo.HangHoa SET TenHH='LG' WHERE MaNSX='LG'
+GO 
