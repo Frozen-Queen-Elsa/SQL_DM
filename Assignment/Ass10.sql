@@ -46,3 +46,81 @@ GO
 /*
 	3. Insert the following data into the tables:
 */
+
+INSERT dbo.tbCustomer
+    (
+        CustCode,
+        CustName,
+        CustAddress,
+        CustPhone,
+        CustEmail,
+        CustStatus
+    )
+VALUES
+    (
+        'C001', -- CustCode - varchar(5)
+        'Rahul Khana', -- CustName - varchar(30)
+        '7th Cross Road', -- CustAddress - varchar(50)
+        '298345878', -- CustPhone - varchar(15)
+        'khannar@hotmail.com', -- CustEmail - varchar(25)
+        'Valid'  -- CustStatus - varchar(10)
+    ),
+    (
+        'C002', -- CustCode - varchar(5)
+        'Anil Thakkar', -- CustName - varchar(30)
+        'Line Ali Road', -- CustAddress - varchar(50)
+        '657654323', -- CustPhone - varchar(15)
+        'Thakkar2002@yahoo.com', -- CustEmail - varchar(25)
+        'Valid'  -- CustStatus - varchar(10)
+    ),
+    (
+        'C004', -- CustCode - varchar(5)
+        'Sanjay Gupta', -- CustName - varchar(30)
+        'Link Road', -- CustAddress - varchar(50)
+        '367654323', -- CustPhone - varchar(15)
+        'SanjayG@indiatimes.com', -- CustEmail - varchar(25)
+        'Invalid'  -- CustStatus - varchar(10)
+    ),
+    (
+        'C005', -- CustCode - varchar(5)
+        'Sagar Vyas', -- CustName - varchar(30)
+        'Link Road', -- CustAddress - varchar(50)
+        '376543255', -- CustPhone - varchar(15)
+        'Sagarvyas@india.com', -- CustEmail - varchar(25)
+        'Valid'  -- CustStatus - varchar(10)
+    )
+GO 
+
+INSERT dbo.tbMessage
+    (
+        CustCode,
+        MsgDetail,
+        MsgDate,
+        Status
+    )
+VALUES
+    (
+        'C001',        -- CustCode - varchar(5)
+        'Voice mail always give ACCESS DENIED message',        -- MsgDetail - varchar(300)
+        '20140831', -- MsgDate - date
+        'Pending'         -- Status - varchar(10)
+    ),
+    (
+        'C005',        -- CustCode - varchar(5)
+        'Voice mail activation always give NO ACCESS message',        -- MsgDetail - varchar(300)
+        '20140901', -- MsgDate - date
+        'Pending'         -- Status - varchar(10)
+    ),
+    (
+        'C001',        -- CustCode - varchar(5)
+        'Please send all future bill to my residential address instead of my office address',        -- MsgDetail - varchar(300)
+        '20140905', -- MsgDate - date
+        'Resolved'         -- Status - varchar(10)
+    ),
+    (
+        'C004',        -- CustCode - varchar(5)
+        'Please send new monthly brochure …',        -- MsgDetail - varchar(300)
+        '20141108', -- MsgDate - date
+        'Pending'         -- Status - varchar(10)
+    )
+GO 
