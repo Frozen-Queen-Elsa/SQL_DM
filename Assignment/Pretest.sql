@@ -223,5 +223,71 @@ EXEC dbo.uspSpecificPriceIncrease
 SELECT @sophong AS N'Tổng số phòng có giá >250' 
 GO 
 
+/*
+	8. Create a trigger named tgBookingRoom that allows one booking order having 3 rooms maximum.
+*/
 
+-- ???
+CREATE TRIGGER tgBookingRoom
+ON dbo.tbBooking
+AFTER INSERT AS
+BEGIN		
+	IF (SELECT COUNT(RoomNo)+1 FROM Inserted GROUP BY Inserted.BookingNo)>2
+	BEGIN
+		PRINT N'Mỗi đơn đặt chỗ chỉ được đặt tối đa 3 phòng'
+		ROLLBACK
+	END 	
+END
+GO 
+
+SELECT * FROM dbo.tbBooking
+SELECT COUNT(BookingNo) FROM dbo.tbBooking 
+SELECT COUNT(RoomNo)+1 FROM dbo.tbBooking GROUP BY BookingNo
+--Test trigger
+INSERT dbo.tbBooking
+    (
+        BookingNo,
+        RoomNo,
+        TouristName,
+        DateFrom,
+        DateTo
+    )
+VALUES
+    (
+        3,         -- BookingNo - int
+        301,         -- RoomNo - int
+        'Taeyeon',        -- TouristName - varchar(20)
+        '20181210', -- DateFrom - datetime
+        '20181212'  -- DateTo - datetime
+    ),
+    (
+        3,         -- BookingNo - int
+        101,         -- RoomNo - int
+        'Taeyeon',        -- TouristName - varchar(20)
+        '20181210', -- DateFrom - datetime
+        '20181212'  -- DateTo - datetime
+    )
+GO 
+
+SELECT * FROM dbo.tbBooking
+GO 
+
+
+/*
+	9. Create a trigger named tgRoomUpdate that doing the following (using try-catch structure) : 
+		If new price is equal to 0 and this room has not existed in tbBooking, then remove it from tbRoom table
+		Else display an error message and roll back transaction.
+*/
+--????
+CREATE TRIGGER tgRoomUpdate
+ON dbo.tbRoom 
+AFTER UPDATE AS
+BEGIN
+	DECLARE @newprice int
+	IF(SELECT @newprice=Inserted.UnitPrice FROM Inserted )=0 AND NOT EXISTS IN (SELECT * FROM dbo.tbBooking a WHERE a.RoomNo=Inserted.RoomNo)
+	BEGIN
+		DELETE FROM dbo.tbRoom WHERE UnitPrice=0
+    END 
+END
+GO 
 
