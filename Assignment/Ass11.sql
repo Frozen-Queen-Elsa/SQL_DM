@@ -131,7 +131,7 @@ VALUES
         1   -- IssueQty - int
     ),
     (
-        'IS005', -- IssueCode - varchar(5)
+        'IS004', -- IssueCode - varchar(5)
         'IT004', -- ItemCode - varchar(5)
         5   -- IssueQty - int
     )
@@ -239,9 +239,8 @@ BEGIN
 	--(Cập nhật là cột Qoh của bảng Item bằng cách trừ đi số lượng bị lỗi)
 	UPDATE dbo.tbItem 
 	SET Qoh -= @soluong_issue
-	FROM dbo.tbItem a JOIN Inserted b ON b.ItemCode = a.ItemCode
+	FROM dbo.tbItem a JOIN Inserted b ON b.ItemCode = a.ItemCode	
 END 
-
 GO 
 
 --Test Trigger kiểm tra Insert IT004 có IssueQty = 500 có thông báo lỗi không !!
@@ -272,11 +271,13 @@ INSERT dbo.tbIssueDetails
     )
 VALUES
     (
-        'IS1001', -- IssueCode - varchar(5)
-        'IT1004', -- ItemCode - varchar(5)
+        'IS001', -- IssueCode - varchar(5)
+        'IT004', -- ItemCode - varchar(5)
         10   -- IssueQty - int
     )
 GO 
+
+
 
 SELECT * FROM dbo.tbIssueDetails
 SELECT * FROM dbo.tbItem
