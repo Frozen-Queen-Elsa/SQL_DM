@@ -192,3 +192,160 @@ EXEC dbo.uspChangeStatus
 SELECT @SoKQ AS N'Number of Records Changed'
 GO 
 
+/*
+	8. Create a store procedure uspCountStatus to count and return the number of messages (output parameter) depending on the given status (input parameter)
+*/
+CREATE PROC usbCountStatus 
+@mes_status VARCHAR(10) , @sotinnhan INT OUTPUT
+AS 
+BEGIN
+	--Bước 1 Hiển thị bảng theo yêu cầu
+    SELECT *
+	FROM dbo.tbMessage
+	WHERE [Status]=@mes_status
+	--Bước 2 Cập nhật biến @sotinnhan
+	SET @sotinnhan =@@ROWCOUNT
+END
+GO 
+
+DECLARE @sotinnhan INT;
+EXEC dbo.usbCountStatus
+    @mes_status = 'Resolved',              -- varchar(10)
+    @sotinnhan = @sotinnhan OUTPUT -- int
+SELECT @sotinnhan AS N'Tổng số tin nhắn'
+GO 
+
+DECLARE @sotinnhan INT;
+EXEC dbo.usbCountStatus
+    @mes_status = 'Pending',              -- varchar(10)
+    @sotinnhan = @sotinnhan OUTPUT -- int
+SELECT @sotinnhan AS N'Tổng số tin nhắn'
+GO 
+
+/*
+	9. Create a trigger tgCustomerInvalid for table tbCustomer which will perform rollback transaction when a new record is inserted which customer has status is invalid and display appropriate messages.
+*/
+CREATE TRIGGER tgCustomerInvalid
+ON dbo.tbCustomer
+FOR INSERT AS
+BEGIN
+	DECLARE @trangthai VARCHAR(10)
+	SELECT @trangthai = CustStatus FROM Inserted
+	IF @trangthai ='Invalid' 
+	BEGIN
+		PRINT N'Bạn không được Insert trạng thái Customer là Invalid'
+		ROLLBACK
+	END 
+END
+GO 
+
+--Kiểm tra Insert Customer có Status Invalid có báo lỗi không !
+INSERT dbo.tbCustomer
+    (
+        CustCode,
+        CustName,
+        CustAddress,
+        CustPhone,
+        CustEmail,
+        CustStatus
+    )
+VALUES
+    (
+        'C008', -- CustCode - varchar(5)
+        'ABC', -- CustName - varchar(30)
+        'ABC', -- CustAddress - varchar(50)
+        '123545634', -- CustPhone - varchar(15)
+        '4343245', -- CustEmail - varchar(25)
+        'Invalid'  -- CustStatus - varchar(10)
+    )
+GO 
+
+/*
+	10. Create a trigger tgCustomer for table tbCustomer which deletes all related records in table tbMessage whenever a record of tbCustomer is deleted.
+*/
+
+CREATE TRIGGER tgCustomer
+ON dbo.tbCustomer
+INSTEAD OF DELETE AS 
+BEGIN 
+	DELETE FROM dbo.tbMessage WHERE CustCode IN (SELECT Deleted.CustCode FROM Deleted) ;
+	DELETE FROM dbo.tbCustomer WHERE CustCode IN (SELECT CustCode FROM Deleted)
+END 
+GO 
+
+--Check Trigger 
+--Insert thêm dữ liệu để chút test xóa :) 
+INSERT dbo.tbCustomer
+    (
+        CustCode,
+        CustName,
+        CustAddress,
+        CustPhone,
+        CustEmail,
+        CustStatus
+    )
+VALUES
+    (
+        'C010', -- CustCode - varchar(5)
+        'Create to Delete 1', -- CustName - varchar(30)
+        'ABC', -- CustAddress - varchar(50)
+        '123456', -- CustPhone - varchar(15)
+        'ABC@BCD', -- CustEmail - varchar(25)
+        'Valid'  -- CustStatus - varchar(10)
+    ),
+    (
+        'C011', -- CustCode - varchar(5)
+        'Create to Delete 2', -- CustName - varchar(30)
+        'FEG', -- CustAddress - varchar(50)
+        '8965235', -- CustPhone - varchar(15)
+        'ABC@BCD', -- CustEmail - varchar(25)
+        'Valid'  -- CustStatus - varchar(10)
+    )
+GO 
+
+INSERT dbo.tbMessage
+    (
+        CustCode,
+        MsgDetail,
+        MsgDate,
+        Status
+    )
+VALUES
+    (
+        'C010',        -- CustCode - varchar(5)
+        'Spam email ne',        -- MsgDetail - varchar(300)
+        GETDATE(), -- MsgDate - date
+        'Pending'         -- Status - varchar(10)
+    ),
+    (
+        'C010',        -- CustCode - varchar(5)
+        'Tui nhan tin choi cho vui thoi',        -- MsgDetail - varchar(300)
+        '20201010', -- MsgDate - date
+        'Pending'         -- Status - varchar(10)
+    ),
+    (
+        'C011',        -- CustCode - varchar(5)
+        'Xoa tui di , Ngai ngung gi nua',        -- MsgDetail - varchar(300)
+        GETDATE(), -- MsgDate - date
+        'Resolved'         -- Status - varchar(10)
+    ),
+    (
+        'C011',        -- CustCode - varchar(5)
+        'Doi mai ma ko thay thu minh bi xoa, Chan !',        -- MsgDetail - varchar(300)
+        '20151212', -- MsgDate - date
+        'Resolved'         -- Status - varchar(10)
+    )
+GO 
+
+
+--Test Trigger , Xóa 2 Customer có CustCode = C010 và C011
+SELECT * FROM dbo.tbCustomer
+SELECT * FROM dbo.tbMessage
+GO 
+
+DELETE FROM dbo.tbCustomer WHERE CustCode='C010'
+GO 
+DELETE FROM dbo.tbCustomer WHERE CustCode='C011'
+GO 
+
+
