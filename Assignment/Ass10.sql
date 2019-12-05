@@ -24,7 +24,7 @@ GO
 
 CREATE TABLE tbCustomer
 (
-	CustCode VARCHAR(5) PRIMARY KEY ,   
+	CustCode VARCHAR(5) PRIMARY KEY NONCLUSTERED,   
 	CustName VARCHAR(30) NOT NULL ,		
 	CustAddress VARCHAR(50) NOT NULL ,	
 	CustPhone VARCHAR(15) ,				
@@ -35,7 +35,7 @@ GO
 
 CREATE TABLE tbMessage
 (
-	MsgNo INT IDENTITY(1000,1) PRIMARY KEY,
+	MsgNo INT IDENTITY(1000,1) PRIMARY KEY NONCLUSTERED,
 	CustCode VARCHAR(5) FOREIGN KEY REFERENCES dbo.tbCustomer(CustCode) ,
 	MsgDetail VARCHAR(300) NOT NULL,
 	MsgDate DATE NOT NULL DEFAULT GETDATE() ,
@@ -123,4 +123,40 @@ VALUES
         '20141108', -- MsgDate - date
         'Pending'         -- Status - varchar(10)
     )
+GO 
+
+/*
+	4. a. Create a clustered index IX_Name for CustName column on tbCustomer table.
+	   b. Create a composite index IX_CustMsg fot CustCode and MsgNo columns on tbMessage table
+*/
+
+CREATE CLUSTERED INDEX IX_Name ON dbo.tbCustomer(CustName)
+GO 
+CREATE CLUSTERED INDEX IX_CustMsg ON dbo.tbMessage(CustCode,MsgNo)
+GO 
+
+/*
+	5. Write a query to display the list of customers have no message sent yet.
+*/
+SELECT *
+FROM dbo.tbCustomer a
+WHERE NOT EXISTS(SELECT * FROM dbo.tbMessage b WHERE a.CustCode=b.CustCode)
+GO 
+
+/*
+	6. Create a view vReport which displays messages sended after 1 – Sep – 2014 as following:
+		MsgNo MsgDetails			DatePosted	 PostedBy			Status
+		1002  Please send all …		09/05/2014	 RahulKhana			Resolved
+		1003  Please send new…		11/08/2014	 Sanjay Gupta		Pending
+		…
+	Note: The definition of view must be hidden from users.
+*/
+CREATE VIEW vReport 
+WITH ENCRYPTION
+AS
+SELECT b.MsgNo,b.MsgDetail,b.MsgDate AS [DatePosted],a.CustName AS [PostedBy],a.CustStatus AS [Status]
+FROM dbo.tbCustomer a JOIN dbo.tbMessage b ON b.CustCode = a.CustCode
+GO 
+
+SELECT * FROM dbo.vReport
 GO 
