@@ -1,0 +1,12 @@
+﻿USE	db_1907
+GO 
+
+--Viết FUNCTION tính giai thừa
+CREATE FUNCTION ufn_giaithua(@n int)
+RETURN BIGINT 
+AS
+BEGIN
+	DECLARE @kq BIGINT
+	RETURN 
+END
+GO 
