@@ -367,9 +367,15 @@ GO
 -- Tạo Trigger Insert  ????????
 CREATE TRIGGER trDangKy
 ON dbo.tbDangKy
-FOR INSERT AS 
+AFTER INSERT AS 
 BEGIN
-	DECLARE @solop=
+	DECLARE @solop INT
+	SELECT @solop=(COUNT(Inserted.MaLop)+1) FROM Inserted GROUP BY Inserted.MaHV 
+	IF @solop>2
+	BEGIN
+		PRINT N'Mỗi học sinh chỉ được đăng ký tối đa 2 lớp'
+		ROLLBACK
+    END	
 END 
 GO 
 
