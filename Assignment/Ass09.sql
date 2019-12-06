@@ -368,8 +368,7 @@ CREATE TRIGGER trDangKy
 ON dbo.tbDangKy
 AFTER INSERT AS 
 BEGIN
-
-	IF (SELECT COUNT(*) FROM Inserted GROUP BY Inserted.MaHV)>=2
+	IF (SELECT COUNT(*) FROM dbo.tbDangKy GROUP BY MaHV)>=2
 	BEGIN
 		PRINT N'Mỗi học sinh chỉ được đăng ký tối đa 2 lớp'
 		ROLLBACK
@@ -377,7 +376,8 @@ BEGIN
 END 
 GO 
 
-SELECT COUNT(*) FROM dbo.tbDangKy GROUP BY MaHV
+sp_helptext trDangKy
+SELECT COUNT(*) FROM dbo.tbDangKy GROUP BY MaHV 
 
 --Test trigger bằng cách Insert HV02 đăng ký thêm 1 lớp(đã đăng ký 2 lớp) 
 SELECT * FROM dbo.tbDangKy WHERE MaHV='HV02'
