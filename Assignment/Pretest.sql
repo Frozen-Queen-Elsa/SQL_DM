@@ -122,6 +122,13 @@ VALUES
         'Ana',        -- TouristName - varchar(20)
         '20150112', -- DateFrom - datetime
         '20150114'  -- DateTo - datetime
+    ),
+	(
+        3,         -- BookingNo - int
+        301,         -- RoomNo - int
+        'Seohyun',        -- TouristName - varchar(20)
+        '20181210', -- DateFrom - datetime
+        '20181212'  -- DateTo - datetime
     )
 GO 
 
@@ -226,8 +233,6 @@ GO
 /*
 	8. Create a trigger named tgBookingRoom that allows one booking order having 3 rooms maximum.
 */
-
--- ???
 CREATE TRIGGER tgBookingRoom
 ON dbo.tbBooking
 AFTER INSERT AS
@@ -239,6 +244,7 @@ BEGIN
 	END 	
 END
 GO 
+sp_helptext tgBookingRoom
 
 SELECT * FROM dbo.tbBooking
 SELECT COUNT(BookingNo) FROM dbo.tbBooking 
@@ -255,19 +261,13 @@ INSERT dbo.tbBooking
 VALUES
     (
         3,         -- BookingNo - int
-        301,         -- RoomNo - int
-        'Taeyeon',        -- TouristName - varchar(20)
-        '20181210', -- DateFrom - datetime
-        '20181212'  -- DateTo - datetime
-    ),
-    (
-        3,         -- BookingNo - int
-        101,         -- RoomNo - int
+        103,         -- RoomNo - int
         'Taeyeon',        -- TouristName - varchar(20)
         '20181210', -- DateFrom - datetime
         '20181212'  -- DateTo - datetime
     )
 GO 
+DELETE FROM dbo.tbBooking WHERE TouristName='Taeyeon'
 
 SELECT * FROM dbo.tbBooking
 GO 
