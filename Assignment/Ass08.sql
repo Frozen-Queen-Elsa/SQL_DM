@@ -244,4 +244,27 @@ EXEC dbo.uspKH
     @hoten = N'An An' -- nvarchar(40)
 GO 
 
- 
+--f) Tạo stored procedure uspMH tăng giá tất cả các mặt hàng lên 10%.
+
+ALTER TABLE dbo.tbMatHang
+	ALTER COLUMN DonGia FLOAT NOT NULL
+GO 
+
+SELECT * FROM dbo.tbMatHang
+GO  
+
+CREATE PROC uspMH
+AS
+BEGIN
+	--Lệnh 1
+	SELECT * FROM dbo.tbMatHang 
+	--Lệnh 2 
+	UPDATE dbo.tbMatHang SET DonGia=(dongia*110/100)
+	--Lệnh 3 
+	SELECT * FROM dbo.tbMatHang
+END
+GO 
+
+EXEC dbo.uspMH	
+GO 
+
