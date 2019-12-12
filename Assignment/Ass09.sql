@@ -363,25 +363,38 @@ EXEC dbo.uspGV
 GO 
 
 -- 8. Tạo (insert, update) Trigger trDangky bảo đảm 1 học viên chỉ được đăng ký tối đa 2 lớp
+SELECT * FROM dbo.tbDangKy
+GO 
+CREATE VIEW vwCheckHV
+AS 
 
-CREATE TRIGGER trDangKy
-ON dbo.tbDangKy
-AFTER INSERT AS 
-BEGIN
-	IF (SELECT COUNT(*) FROM dbo.tbDangKy GROUP BY MaHV)>=2
-	BEGIN
-		PRINT N'Mỗi học sinh chỉ được đăng ký tối đa 2 lớp'
-		ROLLBACK
-    END	
-END 
+	SELECT a.MaHV,a.HoTen,COUNT(*) AS N'Số Lớp Đăng Ký'
+	FROM dbo.tbHocVien a JOIN dbo.tbDangKy b ON b.MaHV = a.MaHV
+	GROUP BY a.MaHV,a.HoTen
+	HAVING COUNT(*)>=2
+ 
 GO 
 
-sp_helptext trDangKy
-SELECT COUNT(*) FROM dbo.tbDangKy GROUP BY MaHV 
+ALTER TRIGGER trDangKy
+ON dbo.tbDangKy
+AFTER INSERT,update AS 
+BEGIN
+	DECLARE @solop INT
+	DECLARE @masoSV VARCHAR(5)
+	SELECT @masoSV=Inserted.MaHV FROM Inserted
+	SELECT @solop=COUNT(*) FROM dbo.tbDangKy WHERE MaHV=@masoSV GROUP BY MaHV
+	IF @solop>2
+	BEGIN   
+		PRINT N'1 sinh viên không thể đăng ký nhiều hơn 2 lớp'
+		ROLLBACK
+	END 	
+END 
+GO 
 
 --Test trigger bằng cách Insert HV02 đăng ký thêm 1 lớp(đã đăng ký 2 lớp) 
 SELECT * FROM dbo.tbDangKy WHERE MaHV='HV02'
 GO 
+
 
 INSERT dbo.tbDangKy
     (
@@ -399,7 +412,7 @@ VALUES
     )
 GO 
 
-DELETE FROM dbo.tbDangKy WHERE MaHV='HV02' AND MaLop='LH01'
+
 
 -- 9. Tạo (update) Trigger trHVTen không cho phép đổi tên học viên
 CREATE TRIGGER trHVTen
