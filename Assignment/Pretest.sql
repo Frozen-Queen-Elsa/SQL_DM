@@ -233,17 +233,24 @@ GO
 /*
 	8. Create a trigger named tgBookingRoom that allows one booking order having 3 rooms maximum.
 */
-CREATE TRIGGER tgBookingRoom
+alter TRIGGER tgBookingRoom
 ON dbo.tbBooking
-AFTER INSERT AS
-BEGIN		
-	IF (SELECT COUNT(RoomNo)+1 FROM Inserted GROUP BY Inserted.BookingNo)>2
+AFTER INSERT,UPDATE AS
+BEGIN
+	DECLARE @sophong INT
+	DECLARE @maso INT
+	SELECT @maso=Inserted.BookingNo FROM Inserted
+	SELECT @sophong=COUNT(*) FROM dbo.tbBooking WHERE BookingNo=@maso GROUP BY BookingNo
+	IF @sophong>3
 	BEGIN
-		PRINT N'Mỗi đơn đặt chỗ chỉ được đặt tối đa 3 phòng'
+		PRINT N'Mỗi Booking Order chi duoc dang ky toi da 3 phong'
 		ROLLBACK
-	END 	
+    END 
 END
 GO 
+
+
+
 sp_helptext tgBookingRoom
 
 SELECT * FROM dbo.tbBooking
@@ -265,9 +272,17 @@ VALUES
         'Taeyeon',        -- TouristName - varchar(20)
         '20181210', -- DateFrom - datetime
         '20181212'  -- DateTo - datetime
+    ),
+	(
+        3,         -- BookingNo - int
+        101,         -- RoomNo - int
+        'Taeyeon',        -- TouristName - varchar(20)
+        '20181210', -- DateFrom - datetime
+        '20181212'  -- DateTo - datetime
     )
+
 GO 
-DELETE FROM dbo.tbBooking WHERE TouristName='Taeyeon'
+
 
 SELECT * FROM dbo.tbBooking
 GO 
@@ -278,16 +293,53 @@ GO
 		If new price is equal to 0 and this room has not existed in tbBooking, then remove it from tbRoom table
 		Else display an error message and roll back transaction.
 */
---????
+--???
+
+
 CREATE TRIGGER tgRoomUpdate
 ON dbo.tbRoom 
 AFTER UPDATE AS
 BEGIN
-	DECLARE @newprice int
-	IF(SELECT @newprice=Inserted.UnitPrice FROM Inserted )=0 AND NOT EXISTS IN (SELECT * FROM dbo.tbBooking a WHERE a.RoomNo=Inserted.RoomNo)
-	BEGIN
-		DELETE FROM dbo.tbRoom WHERE UnitPrice=0
-    END 
+	BEGIN TRY 
+		IF(SELECT Inserted.UnitPrice FROM Inserted)=0 
+		BEGIN 
+			DELETE FROM dbo.tbRoom WHERE UnitPrice=0
+		END 	
+	END TRY 
+	BEGIN CATCH
+		SELECT ERROR_LINE() N'Dòng lỗi',ERROR_MESSAGE() N'Thanh báo lỗi' , ERROR_NUMBER() N'Mã số lỗi sai'
+		ROLLBACK
+	END CATCH
 END
 GO 
 
+
+
+SELECT * FROM dbo.tbRoom
+SELECT * FROM dbo.tbBooking
+GO 
+--Test Trigger
+--Tạo thêm 1 room không có trong booking để cập nhật giá =0
+INSERT dbo.tbRoom
+    (
+        RoomNo,
+        Type,
+        UnitPrice
+    )
+VALUES
+    (
+        404,   -- RoomNo - int
+        'VIP',  -- Type - varchar(20)
+        500 -- UnitPrice - money
+    )
+GO 
+
+--Check xem có Delete room 404 khi Price =0 không ?
+UPDATE dbo.tbRoom SET UnitPrice=0 WHERE RoomNo=404
+GO 
+
+SELECT * FROM dbo.tbRoom
+
+----Check xem có báo lỗi khi Update room 301 Price =0 không ?
+UPDATE dbo.tbRoom SET UnitPrice=0 WHERE RoomNo=301
+GO 
