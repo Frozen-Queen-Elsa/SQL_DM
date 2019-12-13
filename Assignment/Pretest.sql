@@ -296,18 +296,26 @@ GO
 --???
 
 
-CREATE TRIGGER tgRoomUpdate
+alter TRIGGER tgRoomUpdate
 ON dbo.tbRoom 
-AFTER UPDATE AS
+INSTEAD OF UPDATE AS
 BEGIN
+	DECLARE @sophong INT
+	DECLARE @dongia money 
+	SELECT @sophong=Inserted.RoomNo,@dongia=Inserted.UnitPrice FROM Inserted
 	BEGIN TRY 
-		IF(SELECT Inserted.UnitPrice FROM Inserted)=0 
+		IF @dongia=0 
 		BEGIN 
-			DELETE FROM dbo.tbRoom WHERE UnitPrice=0
-		END 	
+			DELETE FROM dbo.tbRoom WHERE RoomNo=@sophong
+		END 
+		ELSE 
+		BEGIN
+			UPDATE dbo.tbRoom SET UnitPrice=@dongia WHERE RoomNo=@sophong
+		END 
 	END TRY 
 	BEGIN CATCH
-		SELECT ERROR_LINE() N'Dòng lỗi',ERROR_MESSAGE() N'Thanh báo lỗi' , ERROR_NUMBER() N'Mã số lỗi sai'
+		SELECT ERROR_LINE()  N'Dòng lỗi',ERROR_MESSAGE() N'Thanh báo lỗi' , ERROR_NUMBER() N'Mã số lỗi sai'
+		
 		ROLLBACK
 	END CATCH
 END
@@ -334,6 +342,7 @@ VALUES
     )
 GO 
 
+
 --Check xem có Delete room 404 khi Price =0 không ?
 UPDATE dbo.tbRoom SET UnitPrice=0 WHERE RoomNo=404
 GO 
@@ -343,3 +352,8 @@ SELECT * FROM dbo.tbRoom
 ----Check xem có báo lỗi khi Update room 301 Price =0 không ?
 UPDATE dbo.tbRoom SET UnitPrice=0 WHERE RoomNo=301
 GO 
+
+--Check khi update giá bình thường
+UPDATE dbo.tbRoom SET UnitPrice=999 WHERE RoomNo=301
+GO 
+
