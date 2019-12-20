@@ -10,4 +10,4 @@ https://yamcode.com/9UoU3E4i9D
 Ai muốn biết pass thì phải pm nhé :) 
 
 Gợi ý password nếu không muốn pm :	
-Tên của người trong avarta facebook của tui :S ( viết thường , không dâu , không khoảng cách)
+Tên của người trong avatar facebook của tui :S ( viết thường , không dâu , không khoảng cách)
