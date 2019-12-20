@@ -3,6 +3,8 @@
 
 --Link đáp án set 4
 https://yamcode.com/6AzHNF5XMJ
+--Link đáp án set 2
+https://yamcode.com/9UoU3E4i9D
 
 --Password
 Ai muốn biết pass thì phải pm nhé :) 
